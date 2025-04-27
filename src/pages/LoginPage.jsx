@@ -20,6 +20,13 @@ const LoginPage = () => {
     }));
   };
 
+   useEffect(() => {
+    const token = localStorage.getItem("task_token");
+    if (token) {
+      navigate("/");
+    }
+  }, [navigate]);
+  
   const validateForm = () => {
     const { email, password } = formData;
     if (!email || !password) {
