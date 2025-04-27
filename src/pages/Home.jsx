@@ -3,35 +3,34 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion"; // added AnimatePresence
 import { Eye, Trash2 } from "lucide-react";
 
 const Home = () => {
   const navigate = useNavigate();
   const [tasks, setTasks] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [confirmDeleteId, setConfirmDeleteId] = useState(null); // for custom confirm
   const username = localStorage.getItem("task_name");
   const token = localStorage.getItem("task_token");
 
-
-
   useEffect(() => {
-    if(token)
-    {
+    if (token) {
       fetchTasks();
-    }
-    else
-    {
+    } else {
       navigate("/login");
     }
-  }, [token,navigate]);
-  
+  }, [token, navigate]);
+
   const fetchTasks = async () => {
     setLoading(true);
     try {
-      const response = await axios.get("https://taskmanager-backend-nqq8.onrender.com/api/task", {
-        headers: { token },
-      });
+      const response = await axios.get(
+        "https://taskmanager-backend-nqq8.onrender.com/api/task",
+        {
+          headers: { token },
+        }
+      );
       setTasks(response.data.tasks);
     } catch (error) {
       toast.error(error.response?.data?.message || "Failed to fetch tasks");
@@ -40,9 +39,6 @@ const Home = () => {
     }
   };
 
-  
-
- 
   const handleLogout = () => {
     localStorage.removeItem("task_token");
     localStorage.removeItem("task_name");
@@ -50,17 +46,20 @@ const Home = () => {
     navigate("/login");
   };
 
-  
   const handleDelete = async (id) => {
     try {
-      if (!window.confirm("Are you sure you want to delete this task?")) return;
-      await axios.delete(`https://taskmanager-backend-nqq8.onrender.com/api/task/${id}`, {
-        headers: { token },
-      });
+      await axios.delete(
+        `https://taskmanager-backend-nqq8.onrender.com/api/task/${id}`,
+        {
+          headers: { token },
+        }
+      );
       toast.success("Task deleted successfully");
       fetchTasks();
     } catch (error) {
       toast.error(error.response?.data?.message || "Failed to delete task");
+    } finally {
+      setConfirmDeleteId(null); // Close modal after delete
     }
   };
 
@@ -77,7 +76,8 @@ const Home = () => {
       className="min-h-screen pt-16 px-4 sm:px-6 lg:px-8 bg-[#F4F6F8]"
     >
       <div className="max-w-6xl mx-auto py-8">
-       
+
+        {/* Header */}
         <div className="flex justify-between items-center mb-6">
           <h2 className="text-2xl font-bold text-[#1F2A44] ">
             Welcome, {username || "User"}!
@@ -92,7 +92,7 @@ const Home = () => {
           </motion.button>
         </div>
 
-       
+        {/* Add Task Button */}
         <div className="mb-6">
           <motion.button
             whileHover={{ scale: 1.05 }}
@@ -104,7 +104,7 @@ const Home = () => {
           </motion.button>
         </div>
 
-       
+        {/* Tasks */}
         {loading ? (
           <p className="text-center text-[#6B7280]">Loading...</p>
         ) : tasks.length === 0 ? (
@@ -149,7 +149,7 @@ const Home = () => {
                   <motion.button
                     whileHover={{ scale: 1.05 }}
                     whileTap={{ scale: 0.95 }}
-                    onClick={() => handleDelete(task._id)}
+                    onClick={() => setConfirmDeleteId(task._id)}
                     className="flex-1 flex items-center justify-center gap-1 px-3 py-2 bg-[#00A69C] text-white rounded-md text-sm font-medium hover:bg-[#008C84] cursor-pointer"
                   >
                     <Trash2 size={16} /> Delete
@@ -160,6 +160,43 @@ const Home = () => {
           </div>
         )}
       </div>
+
+      {/* Custom Confirm Modal */}
+      <AnimatePresence>
+        {confirmDeleteId && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 bg-black bg-opacity-40 flex items-center justify-center z-50"
+          >
+            <motion.div
+              initial={{ scale: 0.8 }}
+              animate={{ scale: 1 }}
+              exit={{ scale: 0.8 }}
+              className="bg-white rounded-lg p-6 shadow-lg w-[90%] max-w-md"
+            >
+              <h2 className="text-xl font-bold text-[#1F2A44] mb-4 text-center">Confirm Delete</h2>
+              <p className="text-gray-600 text-center mb-6">Are you sure you want to delete this task?</p>
+              <div className="flex gap-4 justify-center">
+                <button
+                  onClick={() => handleDelete(confirmDeleteId)}
+                  className="bg-red-600 text-white px-4 py-2 rounded-md hover:bg-red-700 transition"
+                >
+                  Yes, Delete
+                </button>
+                <button
+                  onClick={() => setConfirmDeleteId(null)}
+                  className="bg-gray-300 text-gray-800 px-4 py-2 rounded-md hover:bg-gray-400 transition"
+                >
+                  Cancel
+                </button>
+              </div>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
     </motion.div>
   );
 };
