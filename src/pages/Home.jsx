@@ -28,7 +28,7 @@ const Home = () => {
   };
 
   useEffect(() => {
-    if(token && token !== "null")
+    if(token)
     {
       fetchTasks();
     }
