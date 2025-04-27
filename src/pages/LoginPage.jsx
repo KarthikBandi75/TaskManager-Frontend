@@ -16,7 +16,7 @@ const LoginPage = () => {
  useEffect(() => {
     const token = localStorage.getItem("task_token");
     if (token) {
-      navigate("https://task-manager-frontend-mediconnects-projects.vercel.app/");
+      navigate("/");
     }
   }, [navigate]);
   
