@@ -11,12 +11,11 @@ const Home = () => {
   const [tasks, setTasks] = useState([]);
   const [loading, setLoading] = useState(true);
   const username = localStorage.getItem("task_name");
-
+  const token = localStorage.getItem("task_token");
  
   const fetchTasks = async () => {
     setLoading(true);
     try {
-      const token = localStorage.getItem("task_token");
       const response = await axios.get("https://taskmanager-backend-nqq8.onrender.com/api/task", {
         headers: { token },
       });
@@ -29,7 +28,14 @@ const Home = () => {
   };
 
   useEffect(() => {
-    fetchTasks();
+    if(token && token !== "null")
+    {
+      fetchTasks();
+    }
+    else
+    {
+      navigate("/login");
+    }
   }, []);
 
  
@@ -43,7 +49,7 @@ const Home = () => {
   
   const handleDelete = async (id) => {
     try {
-      const token = localStorage.getItem("task_token");
+      if (!window.confirm("Are you sure you want to delete this task?")) return;
       await axios.delete(`https://taskmanager-backend-nqq8.onrender.com/api/task/${id}`, {
         headers: { token },
       });
