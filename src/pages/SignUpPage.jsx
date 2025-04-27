@@ -13,7 +13,14 @@ const SignupPage = () => {
     confirmPassword: "",
   });
   const [loading, setLoading] = useState(false);
-
+  
+ useEffect(() => {
+    const token = localStorage.getItem("task_token");
+    if (token) {
+      navigate("/");
+    }
+  }, [navigate]);
+  
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData((prevState) => ({
@@ -22,12 +29,6 @@ const SignupPage = () => {
     }));
   };
 
-   useEffect(() => {
-    const token = localStorage.getItem("task_token");
-    if (token) {
-      navigate("/");
-    }
-  }, [navigate]);
   const validateForm = () => {
     const { name, email, password, confirmPassword } = formData;
     if (!name || !email || !password || !confirmPassword) {
