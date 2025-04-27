@@ -12,6 +12,14 @@ const LoginPage = () => {
   });
   const [loading, setLoading] = useState(false);
 
+
+ useEffect(() => {
+    const token = localStorage.getItem("task_token");
+    if (token) {
+      navigate("/");
+    }
+  }, [navigate]);
+  
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData((prevState) => ({
@@ -20,12 +28,6 @@ const LoginPage = () => {
     }));
   };
 
-   useEffect(() => {
-    const token = localStorage.getItem("task_token");
-    if (token) {
-      navigate("/");
-    }
-  }, [navigate]);
   
   const validateForm = () => {
     const { email, password } = formData;
