@@ -77,7 +77,7 @@ const Home = () => {
     >
       <div className="max-w-6xl mx-auto py-8">
 
-        {/* Header */}
+      
         <div className="flex justify-between items-center mb-6">
           <h2 className="text-2xl font-bold text-[#1F2A44] ">
             Welcome, {username || "User"}!
@@ -92,7 +92,7 @@ const Home = () => {
           </motion.button>
         </div>
 
-        {/* Add Task Button */}
+     
         <div className="mb-6">
           <motion.button
             whileHover={{ scale: 1.05 }}
@@ -104,7 +104,7 @@ const Home = () => {
           </motion.button>
         </div>
 
-        {/* Tasks */}
+      
         {loading ? (
           <p className="text-center text-[#6B7280]">Loading...</p>
         ) : tasks.length === 0 ? (
@@ -161,7 +161,7 @@ const Home = () => {
         )}
       </div>
 
-      {/* Custom Confirm Modal */}
+   
       <AnimatePresence>
         {confirmDeleteId && (
           <motion.div
@@ -181,13 +181,13 @@ const Home = () => {
               <div className="flex gap-4 justify-center">
                 <button
                   onClick={() => handleDelete(confirmDeleteId)}
-                  className="bg-red-600 text-white px-4 py-2 rounded-md hover:bg-red-700 transition"
+                  className="bg-red-600 text-white px-4 py-2 rounded-md hover:bg-red-700 transition cursor-pointer"
                 >
                   Yes, Delete
                 </button>
                 <button
                   onClick={() => setConfirmDeleteId(null)}
-                  className="bg-gray-300 text-gray-800 px-4 py-2 rounded-md hover:bg-gray-400 transition"
+                  className="bg-gray-300 text-gray-800 px-4 py-2 rounded-md hover:bg-gray-400 transition cursor-pointer"
                 >
                   Cancel
                 </button>
