@@ -36,7 +36,7 @@ const Home = () => {
     {
       navigate("/login");
     }
-  }, []);
+  }, [token]);
 
  
   const handleLogout = () => {
