@@ -29,7 +29,7 @@ const AddTask = () => {
     setLoading(true);
     try {
       const token = localStorage.getItem("task_token");
-      await axios.post("http://localhost:7000/api/task", formData, {
+      await axios.post("https://taskmanager-backend-nqq8.onrender.com/api/task", formData, {
         headers: { token },
       });
       toast.success("Task created successfully");

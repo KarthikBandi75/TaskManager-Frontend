@@ -21,7 +21,7 @@ const UpdateTask = () => {
     const fetchTask = async () => {
       try {
         const token = localStorage.getItem("task_token");
-        const response = await axios.get(`http://localhost:7000/api/task/${id}`, {
+        const response = await axios.get(`https://taskmanager-backend-nqq8.onrender.com/api/task/${id}`, {
           headers: { token },
         });
         const task = response.data.task;
@@ -57,7 +57,7 @@ const UpdateTask = () => {
     setLoading(true);
     try {
       const token = localStorage.getItem("task_token");
-      await axios.put(`http://localhost:7000/api/task/${id}`, formData, {
+      await axios.put(`https://taskmanager-backend-nqq8.onrender.com/api/task/${id}`, formData, {
         headers: { token },
       });
       toast.success("Task updated successfully");

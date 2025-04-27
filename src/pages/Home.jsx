@@ -17,7 +17,7 @@ const Home = () => {
     setLoading(true);
     try {
       const token = localStorage.getItem("task_token");
-      const response = await axios.get("http://localhost:7000/api/task", {
+      const response = await axios.get("https://taskmanager-backend-nqq8.onrender.com/api/task", {
         headers: { token },
       });
       setTasks(response.data.tasks);
@@ -44,7 +44,7 @@ const Home = () => {
   const handleDelete = async (id) => {
     try {
       const token = localStorage.getItem("task_token");
-      await axios.delete(`http://localhost:7000/api/task/${id}`, {
+      await axios.delete(`https://taskmanager-backend-nqq8.onrender.com/api/task/${id}`, {
         headers: { token },
       });
       toast.success("Task deleted successfully");

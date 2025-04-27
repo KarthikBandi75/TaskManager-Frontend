@@ -37,7 +37,7 @@ const LoginPage = () => {
 
     try {
       const response = await axios.post(
-        "http://localhost:7000/api/user/login",
+        "https://taskmanager-backend-nqq8.onrender.com/api/user/login",
         formData
       );
       localStorage.setItem("task_token", response.data.token);

@@ -46,7 +46,7 @@ const SignupPage = () => {
 
     try {
       const response = await axios.post(
-        "http://localhost:7000/api/user/register",
+        "https://taskmanager-backend-nqq8.onrender.com/api/user/register",
         { name: formData.name, email: formData.email, password: formData.password }
       );
       console.log(response);
