@@ -12,7 +12,20 @@ const Home = () => {
   const [loading, setLoading] = useState(true);
   const username = localStorage.getItem("task_name");
   const token = localStorage.getItem("task_token");
- 
+
+
+
+  useEffect(() => {
+    if(token)
+    {
+      fetchTasks();
+    }
+    else
+    {
+      navigate("/login");
+    }
+  }, [token,navigate]);
+  
   const fetchTasks = async () => {
     setLoading(true);
     try {
@@ -27,16 +40,7 @@ const Home = () => {
     }
   };
 
-  useEffect(() => {
-    if(token)
-    {
-      fetchTasks();
-    }
-    else
-    {
-      navigate("/login");
-    }
-  }, [token,navigate]);
+  
 
  
   const handleLogout = () => {
